@@ -9,7 +9,9 @@ make
 # Run
 
 ```sh
-./build/bimbam_generator --variants=6000 --samples=500 --file=snps.txt
+mkdir test
+./build/bimbam_generator --samples=500 --variants=6000 --file=test/samples_500
+gzip sample_500.geno.txt
 ```
 
 # LICENSE

@@ -30,10 +30,10 @@ void geno_generator(size_t sample_size, size_t variant_size, string file_name){
   File outfile = File(file_name, "w");
   foreach(i; 0..variant_size){
     outfile.write("rs_id", i);
-    outfile.write("\t", alleles[uniform(0,2)]);
-    outfile.write("\t", alleles[uniform(0,2)]);
+    outfile.write(", ", alleles[uniform(0,2)]);
+    outfile.write(", ", alleles[uniform(0,2)]);
     foreach(j; 0..sample_size){
-      outfile.write("\t", genotype_scores[uniform(0,3)]);
+      outfile.write(", ", genotype_scores[uniform(0,3)]);
     }
     outfile.write("\n");
   }
@@ -64,7 +64,7 @@ void annotation_generator(size_t variant_size, string file_name){
 
   File outfile = File(file_name, "w");
   foreach(i; 0..variant_size){
-    outfile.writeln("rs_id", i, "\t", "pos", i, "\t", 1);
+    outfile.writeln("rs_id", i, "\t", i, "\t", 1);
   }
 
   outfile.close();

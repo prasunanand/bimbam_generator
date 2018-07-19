@@ -6,18 +6,26 @@ import std.random;
 
 void main(string[] args){
   size_t sample_size, variant_size;
+  int mode = 0;
   string file_name;
 
   getopt(args,
     "samples" , &sample_size,
     "variants", &variant_size,
-    "file"    , &file_name
+    "file"    , &file_name,
+    "mode"    , &mode    
   );
 
-  geno_generator(sample_size, variant_size, file_name ~ ".geno.txt");
-  pheno_generator(sample_size, file_name ~ ".pheno.txt");
-  covariates_generator(sample_size, file_name ~ ".covariates.txt");
-  annotation_generator(variant_size, file_name ~ ".snps.txt");
+  if(mode == 0){
+    geno_generator(sample_size, variant_size, file_name ~ ".geno.txt");
+    pheno_generator(sample_size, file_name ~ ".pheno.txt");
+    pheno_binary_generator(sample_size, file_name ~ ".pheno.binary.txt");
+    covariates_generator(sample_size, file_name ~ ".covariates.txt");
+    annotation_generator(variant_size, file_name ~ ".snps.txt");
+  }
+  else{
+    pheno_binary_generator(sample_size, file_name ~ ".pheno.binary.txt");    
+  }
 }
 
 void geno_generator(size_t sample_size, size_t variant_size, string file_name){
@@ -51,6 +59,22 @@ void pheno_generator(size_t sample_size, string file_name){
   foreach(i; 0..sample_size){
     if(coin_toss[uniform(0,3)]){
       outfile.writeln(uniform(0, 12.0, gen));
+    }
+    else{
+      outfile.writeln("NA");
+    }
+  }
+  writeln("exiting!");
+}
+
+void pheno_binary_generator(size_t sample_size, string file_name){
+  writeln("Generating phenotype with sample_size = " , sample_size , "in file ", file_name);
+  File outfile = File(file_name, "w");
+  bool[] coin_toss = [true, false, true];
+  int[] binary_trait = [1, 1, 1, 0, 0];
+  foreach(i; 0..sample_size){
+    if(coin_toss[uniform(0,3)]){
+      outfile.writeln(binary_trait[uniform(0, 5)]);
     }
     else{
       outfile.writeln("NA");
